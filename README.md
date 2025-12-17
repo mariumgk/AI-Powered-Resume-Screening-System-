@@ -145,7 +145,7 @@ Then open:
 
 - `http://127.0.0.1:5000`
 
-## Viva justification notes (high-level)
+##notes (high-level)
 
 - **Why MPNet embeddings?** Strong semantic similarity performance; supports matching, clustering, and classification in a shared embedding space.
 - **Why minimal preprocessing?** Heavy NLP pipelines (lemmatization/stopwords) can distort semantics for transformer encoders; we only remove high-noise/PII patterns and normalize formatting.
