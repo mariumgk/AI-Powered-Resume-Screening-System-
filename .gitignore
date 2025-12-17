@@ -76,4 +76,4 @@ build/
 dist/
 *.egg-info/
 docs
-requirements-test.txt
+requirements-test.txt/
