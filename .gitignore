@@ -1,0 +1,78 @@
+# Python
+*.py[cod]
+*$py.class
+*.so
+__pycache__/
+*.pyc
+.Python
+
+# Project-specific exclusions (private)
+tests/
+docs/
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+.virtualenv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+*.cover
+.hypothesis/
+
+# Data Files (Large datasets and caches)
+data/raw/*.csv
+data/raw/*.pdf
+data/processed/embedding_cache.joblib
+data/processed/embeddings/
+data/processed/corpus/
+
+# Model Artifacts (Keep structure, ignore large model files)
+data/processed/artifacts/*.joblib
+data/processed/artifacts/*.pkl
+data/processed/artifacts/*.npy
+
+# Keep these important files (override above rules)
+!data/processed/artifacts/.gitkeep
+!data/processed/artifacts/embedder.json
+!data/processed/artifacts/classifier_classes.json
+!data/skill_ontology.json
+
+# Logs
+*.log
+logs/
+*.out
+
+# Flask
+instance/
+.webassets-cache
+
+# Environment variables
+.env
+.env.local
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+docs

@@ -1,0 +1,1197 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Resume Intelligence System</title>
+  <style>
+    :root {
+      --bg: #f5f7fa;
+      --bg-secondary: #e8ecf1;
+      --card: #ffffff;
+      --text: #1a202c;
+      --text-secondary: #4a5568;
+      --muted: #718096;
+      --accent: #3b82f6;
+      --accent-light: #60a5fa;
+      --border: #cbd5e0;
+      --border-light: #e2e8f0;
+      --success: #10b981;
+      --success-bg: #d1fae5;
+      --warning: #f59e0b;
+      --warning-bg: #fef3c7;
+      --error: #ef4444;
+      --error-bg: #fee2e2;
+      --shadow: rgba(0, 0, 0, 0.08);
+      --shadow-lg: rgba(0, 0, 0, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 2px solid var(--border-light);
+    }
+
+    h1 {
+      font-size: 28px;
+      margin: 0 0 8px 0;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 4px 0;
+    }
+
+    .tech-stack {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      margin-top: 8px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 400px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 1100px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px var(--shadow);
+      animation: fadeInUp 0.4s ease;
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 4px 16px var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+
+    .card h2 {
+      margin: 0 0 16px 0;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-icon {
+      font-size: 20px;
+    }
+
+    .card-highlight {
+      background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+      border: 2px solid var(--accent);
+    }
+
+    .left-panel {
+      position: sticky;
+      top: 20px;
+    }
+
+    .right-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin: 14px 0 6px;
+    }
+
+    input[type=file],
+    textarea {
+      width: 100%;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      background: var(--bg);
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+      transition: border-color 0.2s ease;
+    }
+
+    input[type=file]:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      background: var(--card);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+      font-family: inherit;
+    }
+
+    .btn {
+      width: 100%;
+      margin-top: 16px;
+      background: var(--accent);
+      border: none;
+      padding: 14px 20px;
+      border-radius: 8px;
+      color: white;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn:hover {
+      background: #2563eb;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    /* Suitability Score Styling */
+    .suitability-container {
+      position: relative;
+      max-width: 280px;
+      margin: 20px auto;
+      text-align: center;
+    }
+
+    .suitability-score {
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin: 16px 0 8px;
+      background: linear-gradient(135deg, var(--accent), #6366f1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .suitability-label {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+
+    .formula-explanation {
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 14px;
+      margin-top: 16px;
+      border-left: 3px solid var(--accent);
+    }
+
+    .formula {
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      color: var(--accent);
+      margin: 8px 0;
+      line-height: 1.6;
+    }
+
+    /* Domain Bars */
+    .domain-bars {
+      margin-top: 16px;
+    }
+
+    .domain-item {
+      margin: 12px 0;
+      padding: 12px;
+      border-radius: 8px;
+      background: var(--bg);
+      transition: all 0.2s ease;
+    }
+
+    .domain-item:hover {
+      background: var(--bg-secondary);
+    }
+
+    .domain-item.primary {
+      background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+      border: 2px solid var(--accent);
+    }
+
+    .domain-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .domain-name {
+      font-weight: 700;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .domain-prob {
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .probability-bar {
+      height: 28px;
+      background: var(--border-light);
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-light), var(--accent));
+      transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 14px;
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3);
+    }
+
+    /* Skills Styling */
+    .skill-section {
+      margin: 16px 0;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .skill-section:last-child {
+      border-bottom: none;
+    }
+
+    .skill-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .skill-header-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .count-badge {
+      background: var(--border-light);
+      color: var(--text-secondary);
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .count-badge.success {
+      background: var(--success-bg);
+      color: var(--success);
+    }
+
+    .count-badge.warning {
+      background: var(--warning-bg);
+      color: var(--warning);
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .skill-tag {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1.5px solid;
+      transition: all 0.2s ease;
+    }
+
+    .skill-tag:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px var(--shadow);
+    }
+
+    .skill-tag.neutral {
+      background: var(--bg);
+      border-color: var(--border);
+      color: var(--text-secondary);
+    }
+
+    .skill-tag.success {
+      background: var(--success-bg);
+      border-color: var(--success);
+      color: #047857;
+    }
+
+    .skill-tag.warning {
+      background: var(--warning-bg);
+      border-color: var(--warning);
+      color: #b45309;
+    }
+
+    /* Micro Explanations */
+    .micro-explain {
+      font-size: 12px;
+      color: var(--muted);
+      margin: 10px 0 6px;
+      line-height: 1.6;
+      padding: 8px 12px;
+      background: var(--bg);
+      border-radius: 6px;
+      border-left: 2px solid var(--accent-light);
+    }
+
+    .micro-explain strong {
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    /* Explainability Card */
+    .card-explainability details {
+      cursor: pointer;
+    }
+
+    .card-explainability summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      list-style: none;
+      padding: 4px 0;
+    }
+
+    .card-explainability summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .expand-hint {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .explanation-content {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 2px solid var(--border-light);
+    }
+
+    .explain-section {
+      margin: 16px 0;
+      padding: 12px;
+      background: var(--bg);
+      border-radius: 8px;
+    }
+
+    .explain-section h3 {
+      font-size: 14px;
+      margin: 0 0 10px 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .domain-confidence {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .confidence-score {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .explanation-trace {
+      background: var(--card);
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border-light);
+    }
+
+    .trace-line {
+      padding: 4px 0;
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .secondary-domains {
+      margin: 8px 0;
+    }
+
+    .secondary-domain {
+      padding: 6px 10px;
+      margin: 4px 0;
+      background: var(--card);
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: 'Courier New', monospace;
+      color: var(--text-secondary);
+      border-left: 3px solid var(--accent-light);
+    }
+
+    .confidence-gap {
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: var(--warning-bg);
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--warning);
+    }
+
+    /* Similar Resumes Table */
+    .similar-resumes-table {
+      margin-top: 12px;
+      overflow: hidden;
+      border-radius: 8px;
+      border: 1px solid var(--border-light);
+    }
+
+    .table-header,
+    .table-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 16px;
+      padding: 12px 16px;
+      align-items: center;
+    }
+
+    .table-header {
+      background: var(--bg);
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .table-row {
+      border-bottom: 1px solid var(--border-light);
+      transition: background 0.2s ease;
+    }
+
+    .table-row:last-child {
+      border-bottom: none;
+    }
+
+    .table-row:hover {
+      background: var(--bg);
+    }
+
+    .resume-id {
+      font-family: 'Courier New', monospace;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .similarity-score {
+      font-family: 'Courier New', monospace;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .cluster-badge {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* Cluster Display */
+    .cluster-display {
+      text-align: center;
+      padding: 24px;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border-radius: 8px;
+      margin: 16px 0;
+    }
+
+    .cluster-id {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .cluster-description {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    /* Chart Containers */
+    .chart-container {
+      max-width: 320px;
+      margin: 20px auto;
+      padding: 10px;
+    }
+
+    .chart-container-wide {
+      margin: 20px 0;
+      padding: 10px;
+    }
+
+    /* Unavailable State */
+    .unavailable-state {
+      padding: 32px;
+      text-align: center;
+      color: var(--muted);
+      font-style: italic;
+      background: var(--bg);
+      border-radius: 8px;
+      border: 2px dashed var(--border);
+    }
+
+    /* Supporting Signals */
+    .signals-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .signal-item {
+      background: var(--bg);
+      padding: 12px;
+      border-radius: 6px;
+      border-left: 3px solid var(--accent-light);
+    }
+
+    .signal-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .signal-value {
+      font-family: 'Courier New', monospace;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* Error Display */
+    .error-display {
+      padding: 16px;
+      background: var(--error-bg);
+      border: 1px solid var(--error);
+      border-radius: 8px;
+      color: #991b1b;
+      font-size: 14px;
+      margin-top: 16px;
+      font-weight: 500;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .mono {
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--border-light);
+      margin: 20px 0;
+    }
+
+    /* Empty state */
+    .empty-state {
+      padding: 40px 20px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .empty-state-text {
+      font-size: 15px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🎓 AI-Powered Resume Intelligence & Decision Support</h1>
+      <div class="subtitle">Semantic Analysis • Domain Classification • Skill Intelligence • Explainable AI</div>
+      <div class="tech-stack">Embeddings: all-mpnet-base-v2 | Classifier: Logistic Regression | Clustering: K-Means</div>
+    </div>
+
+    <div class="grid">
+      <!-- LEFT PANEL: Input -->
+      <div class="left-panel">
+        <div class="card">
+          <h2><span class="card-icon">📄</span> Input</h2>
+          <form method="post" enctype="multipart/form-data">
+            <label>Resume (PDF)</label>
+            <input type="file" name="resume_pdf" accept="application/pdf" />
+
+            <label>Resume (optional plain text)</label>
+            <textarea name="resume_text" placeholder="Paste resume text here if not uploading PDF."></textarea>
+
+            <label>Job Description (recommended for screening)</label>
+            <textarea name="jd_text" placeholder="Paste the Job Description text here (optional)."></textarea>
+
+            <button class="btn" type="submit">🚀 Analyze Resume</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL: Results -->
+      <div class="right-panel">
+        {% if result %}
+          <!-- Suitability Score Card -->
+          <div class="card card-highlight">
+            <h2><span class="card-icon">🎯</span> Overall Suitability Score</h2>
+            <div class="suitability-container">
+              <canvas id="suitabilityGauge"></canvas>
+              <div class="suitability-score">{{ '%.3f'|format(result.screening.suitability_score) }}</div>
+              <div class="suitability-label">{{ result.screening.match_strength }}</div>
+            </div>
+            <div class="formula-explanation">
+              <div class="micro-explain">
+                <strong>What is this?</strong> Combined confidence score balancing semantic similarity with domain expertise
+              </div>
+              <div class="formula">
+                Suitability = α({{ '%.2f'|format(result.screening.alpha) }}) × similarity + β({{ '%.2f'|format(result.screening.beta) }}) × domain confidence
+              </div>
+              <div class="micro-explain">
+                <strong>Why it matters?</strong> Provides a unified screening metric for candidate shortlisting
+              </div>
+            </div>
+          </div>
+
+          <!-- Domain Classification Card -->
+          <div class="card">
+            <h2><span class="card-icon">📊</span> Domain Classification (Top-3)</h2>
+            
+            {% if result.screening.top_domains %}
+              <div class="chart-container">
+                <canvas id="domainChart"></canvas>
+              </div>
+
+              <div class="domain-bars">
+                {% for item in result.screening.top_domains %}
+                <div class="domain-item {% if loop.first %}primary{% endif %}">
+                  <div class="domain-header">
+                    <span class="domain-name">{{ item.domain }}</span>
+                    <span class="domain-prob">{{ '%.1f'|format(item.pct) }}%</span>
+                  </div>
+                  <div class="probability-bar">
+                    <div class="bar-fill" data-width="{{ '%.1f'|format(item.pct) }}"></div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+
+              <div class="micro-explain">
+                <strong>What is this?</strong> Probabilities computed by Logistic Regression on MPNet semantic embeddings
+              </div>
+              <div class="micro-explain">
+                <strong>Why it matters?</strong> Shows domain expertise distribution, not just a single hard classification
+              </div>
+            {% else %}
+              <div class="unavailable-state">No classifier probabilities available</div>
+            {% endif %}
+          </div>
+
+          <!-- Skills Intelligence Card -->
+          <div class="card">
+            <h2><span class="card-icon">🔧</span> Skills Intelligence</h2>
+
+            <div class="skill-section">
+              <div class="skill-header">
+                <span class="skill-header-title">Extracted from Resume</span>
+                <span class="count-badge">{{ result.resume_skills|length }}</span>
+              </div>
+              <div class="skill-tags">
+                {% for sk in result.resume_skills %}
+                <span class="skill-tag neutral">{{ sk }}</span>
+                {% endfor %}
+                {% if not result.resume_skills %}
+                <div class="mono">(none detected)</div>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="skill-section">
+              <div class="skill-header">
+                <span class="skill-header-title">✓ Matched with JD</span>
+                <span class="count-badge success">{{ result.match.matched_skills|length }}</span>
+              </div>
+              <div class="skill-tags">
+                {% for sk in result.match.matched_skills %}
+                <span class="skill-tag success">✓ {{ sk }}</span>
+                {% endfor %}
+                {% if not result.match.matched_skills %}
+                <div class="mono">(none matched)</div>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="skill-section">
+              <div class="skill-header">
+                <span class="skill-header-title">✗ Missing from Resume</span>
+                <span class="count-badge warning">{{ result.match.missing_skills|length }}</span>
+              </div>
+              <div class="skill-tags">
+                {% for sk in result.match.missing_skills %}
+                <span class="skill-tag warning">✗ {{ sk }}</span>
+                {% endfor %}
+                {% if not result.match.missing_skills %}
+                <div class="mono">(none missing)</div>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="chart-container-wide">
+              <canvas id="skillCoverageChart"></canvas>
+            </div>
+
+            <div class="micro-explain">
+              <strong>Extraction method:</strong> Ontology-based matching using domain-specific skill graph
+            </div>
+          </div>
+
+          <!-- JD Matching Card -->
+          <div class="card">
+            <h2><span class="card-icon">🔗</span> Resume ↔ JD Matching</h2>
+            
+            <div class="signals-grid">
+              <div class="signal-item">
+                <div class="signal-label">Cosine Similarity</div>
+                <div class="signal-value">{{ '%.3f'|format(result.screening.similarity_raw) }}</div>
+              </div>
+              <div class="signal-item">
+                <div class="signal-label">Max Class Prob</div>
+                <div class="signal-value">{{ '%.3f'|format(result.screening.max_class_probability) }}</div>
+              </div>
+            </div>
+
+            <div class="micro-explain">
+              <strong>Match Explanation:</strong> {{ result.match.explanation }}
+            </div>
+
+            <div class="micro-explain">
+              <strong>What is this?</strong> Semantic similarity computed in the same embedding space as classification
+            </div>
+          </div>
+
+          <!-- Clustering Card -->
+          <div class="card">
+            <h2><span class="card-icon">🔬</span> Cluster Assignment</h2>
+            
+            {% if result.cluster_id is not none %}
+              <div class="cluster-display">
+                <div class="cluster-id">Cluster {{ result.cluster_id }}</div>
+                <div class="cluster-description">
+                  This resume groups with semantically similar resumes in the dataset
+                </div>
+              </div>
+            {% else %}
+              <div class="unavailable-state">Clustering unavailable</div>
+            {% endif %}
+
+            <div class="micro-explain">
+              <strong>What is this?</strong> K-Means groups resumes by semantic similarity, not by labels
+            </div>
+            <div class="micro-explain">
+              <strong>Why it matters?</strong> Discovers latent resume patterns and can suggest alternative candidates
+            </div>
+          </div>
+
+          <!-- Explainability Card -->
+          <div class="card card-explainability">
+            <details>
+              <summary>
+                <h2><span class="card-icon">🔍</span> Why This Decision?</h2>
+                <span class="expand-hint">Click to expand</span>
+              </summary>
+
+              <div class="explanation-content">
+                <div class="explain-section">
+                  <h3>Primary Domain</h3>
+                  <div class="domain-confidence">
+                    {{ result.decision.primary_domain }}
+                    <span class="confidence-score">({{ '%.1f'|format(result.decision.confidence * 100) }}% confidence)</span>
+                  </div>
+                </div>
+
+                <div class="explain-section">
+                  <h3>Evidence Summary</h3>
+                  <div class="explanation-trace">
+                    {% for line in result.decision.explanation_trace %}
+                    <div class="trace-line">{{ line }}</div>
+                    {% endfor %}
+                  </div>
+                </div>
+
+                {% if result.decision.secondary_domains %}
+                <div class="explain-section">
+                  <h3>Ambiguity Analysis</h3>
+                  <div class="secondary-domains">
+                    {% for d, p in result.decision.secondary_domains %}
+                    <div class="secondary-domain">{{ d }}: {{ '%.3f'|format(p) }}</div>
+                    {% endfor %}
+                  </div>
+                  {% if result.decision.secondary_domains %}
+                  <div class="confidence-gap">
+                    Confidence gap (p1 - p2): {{ '%.3f'|format(result.screening.max_class_probability - result.decision.secondary_domains[0][1]) }}
+                  </div>
+                  {% endif %}
+                </div>
+                {% endif %}
+
+                <div class="explain-section">
+                  <h3>Supporting Signals</h3>
+                  <div class="secondary-domains">
+                    <div class="secondary-domain">Primary domain: {{ result.decision.primary_domain }} (confidence={{ '%.3f'|format(result.decision.confidence) }})</div>
+                    {% if result.decision.skill_domain_scores %}
+                    <div class="secondary-domain">Skill-based domain evidence available</div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </details>
+          </div>
+
+          <!-- Similar Resumes Card -->
+          <div class="card">
+            <h2><span class="card-icon">📋</span> Similar Resumes from Dataset</h2>
+            
+            {% if result.similar_resumes %}
+              <div class="similar-resumes-table">
+                <div class="table-header">
+                  <span>Resume ID</span>
+                  <span>Similarity</span>
+                  <span>Cluster</span>
+                </div>
+                {% for rid, score in result.similar_resumes %}
+                <div class="table-row">
+                  <span class="resume-id">{{ rid }}</span>
+                  <span class="similarity-score">{{ '%.3f'|format(score) }}</span>
+                  <span class="cluster-badge">—</span>
+                </div>
+                {% endfor %}
+              </div>
+            {% else %}
+              <div class="unavailable-state">Requires offline-built resume index</div>
+            {% endif %}
+
+            <div class="micro-explain">
+              <strong>Retrieval method:</strong> Cosine similarity in embedding space; no labels used at inference
+            </div>
+          </div>
+
+          <!-- JD Ranked Resumes (if available) -->
+          {% if result.jd_ranked_resumes %}
+          <div class="card">
+            <h2><span class="card-icon">🎯</span> Top Dataset Resumes for This JD</h2>
+            
+            <div class="similar-resumes-table">
+              <div class="table-header">
+                <span>Resume ID</span>
+                <span>Score</span>
+                <span>Rank</span>
+              </div>
+              {% for rid, score in result.jd_ranked_resumes %}
+              <div class="table-row">
+                <span class="resume-id">{{ rid }}</span>
+                <span class="similarity-score">{{ '%.3f'|format(score) }}</span>
+                <span class="cluster-badge">#{{ loop.index }}</span>
+              </div>
+              {% endfor %}
+            </div>
+
+            <div class="micro-explain">
+              <strong>What is this?</strong> Ranked retrieval from offline-built index based on JD similarity
+            </div>
+          </div>
+          {% endif %}
+
+        {% else %}
+          <!-- Empty State -->
+          <div class="card">
+            <div class="empty-state">
+              <div class="empty-state-icon">📊</div>
+              <div class="empty-state-text">
+                Upload a resume and optionally provide a job description to see comprehensive AI-powered analysis including domain classification, skill intelligence, and explainable decision support.
+              </div>
+            </div>
+          </div>
+        {% endif %}
+
+        {% if error %}
+          <div class="card">
+            <div class="error-display">
+              <strong>⚠️ Error:</strong> {{ error }}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart.js Library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <script>
+    // Animate probability bars
+    (function () {
+      var els = document.querySelectorAll('.bar-fill[data-width]');
+      setTimeout(function() {
+        for (var i = 0; i < els.length; i++) {
+          var w = parseFloat(els[i].getAttribute('data-width'));
+          if (!isNaN(w)) {
+            els[i].style.width = w.toFixed(1) + '%';
+          }
+        }
+      }, 100);
+    })();
+
+    // Initialize charts
+    document.addEventListener('DOMContentLoaded', function() {
+      {% if result %}
+      
+      // Suitability Gauge Chart
+      const suitabilityScore = {{ result.screening.suitability_score }};
+      const suitabilityCtx = document.getElementById('suitabilityGauge');
+      
+      if (suitabilityCtx) {
+        const gaugeColor = suitabilityScore >= 0.75 ? '#10b981' : 
+                          suitabilityScore >= 0.55 ? '#f59e0b' : '#ef4444';
+        
+        new Chart(suitabilityCtx, {
+          type: 'doughnut',
+          data: {
+            datasets: [{
+              data: [suitabilityScore, 1 - suitabilityScore],
+              backgroundColor: [gaugeColor, '#e2e8f0'],
+              borderWidth: 0,
+              borderRadius: 8
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            circumference: 180,
+            rotation: -90,
+            cutout: '75%',
+            plugins: {
+              legend: { display: false },
+              tooltip: { enabled: false }
+            }
+          }
+        });
+      }
+
+      // Domain Distribution Donut Chart
+      const domainCtx = document.getElementById('domainChart');
+      if (domainCtx) {
+        const topDomains = {{ result.screening.top_domains | tojson }};
+        
+        new Chart(domainCtx, {
+          type: 'doughnut',
+          data: {
+            labels: topDomains.map(d => d.domain),
+            datasets: [{
+              data: topDomains.map(d => d.prob),
+              backgroundColor: [
+                '#3b82f6',
+                '#60a5fa',
+                '#93c5fd'
+              ],
+              borderColor: '#ffffff',
+              borderWidth: 3,
+              hoverOffset: 8
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  color: '#1a202c',
+                  font: { size: 12, weight: '600' },
+                  padding: 12
+                }
+              },
+              tooltip: {
+                backgroundColor: '#1a202c',
+                titleColor: '#ffffff',
+                bodyColor: '#ffffff',
+                borderColor: '#3b82f6',
+                borderWidth: 1,
+                padding: 12,
+                callbacks: {
+                  label: function(context) {
+                    return context.label + ': ' + (context.parsed * 100).toFixed(1) + '%';
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // Skill Coverage Chart
+      const skillCtx = document.getElementById('skillCoverageChart');
+      if (skillCtx) {
+        const matched = {{ result.match.matched_skills | length }};
+        const missing = {{ result.match.missing_skills | length }};
+        const total = matched + missing;
+        const coverage = total > 0 ? (matched / total * 100) : 0;
+        
+        new Chart(skillCtx, {
+          type: 'bar',
+          data: {
+            labels: ['Skill Coverage'],
+            datasets: [
+              {
+                label: 'Matched',
+                data: [coverage],
+                backgroundColor: '#10b981',
+                borderColor: '#059669',
+                borderWidth: 2,
+                borderRadius: 6
+              },
+              {
+                label: 'Missing',
+                data: [100 - coverage],
+                backgroundColor: '#f59e0b',
+                borderColor: '#d97706',
+                borderWidth: 2,
+                borderRadius: 6
+              }
+            ]
+          },
+          options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: {
+                stacked: true,
+                max: 100,
+                ticks: {
+                  color: '#4a5568',
+                  font: { size: 11 },
+                  callback: function(value) {
+                    return value + '%';
+                  }
+                },
+                grid: {
+                  color: '#e2e8f0',
+                  drawBorder: false
+                },
+                border: {
+                  display: false
+                }
+              },
+              y: {
+                stacked: true,
+                ticks: {
+                  color: '#1a202c',
+                  font: { size: 12, weight: '600' }
+                },
+                grid: {
+                  display: false
+                },
+                border: {
+                  display: false
+                }
+              }
+            },
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  color: '#1a202c',
+                  font: { size: 12, weight: '600' },
+                  padding: 12,
+                  usePointStyle: true
+                }
+              },
+              tooltip: {
+                backgroundColor: '#1a202c',
+                titleColor: '#ffffff',
+                bodyColor: '#ffffff',
+                borderColor: '#3b82f6',
+                borderWidth: 1,
+                padding: 10,
+                callbacks: {
+                  label: function(context) {
+                    return context.dataset.label + ': ' + context.parsed.x.toFixed(1) + '%';
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      {% endif %}
+    });
+  </script>
+</body>
+</html>

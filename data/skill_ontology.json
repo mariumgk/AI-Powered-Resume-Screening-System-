@@ -1,0 +1,65 @@
+{
+  "version": "1.0",
+  "domains": {
+    "Data Science": {
+      "skills": [
+        "python",
+        "pandas",
+        "numpy",
+        "scikit-learn",
+        "machine learning",
+        "statistics",
+        "data analysis",
+        "tensorflow",
+        "pytorch"
+      ]
+    },
+    "Web Development": {
+      "skills": [
+        "javascript",
+        "html",
+        "css",
+        "react",
+        "node",
+        "flask",
+        "django",
+        "rest api",
+        "sql"
+      ]
+    },
+    "DevOps": {
+      "skills": [
+        "docker",
+        "kubernetes",
+        "ci/cd",
+        "jenkins",
+        "aws",
+        "linux",
+        "terraform"
+      ]
+    },
+    "Mobile Development": {
+      "skills": [
+        "android",
+        "kotlin",
+        "swift",
+        "react native",
+        "flutter"
+      ]
+    },
+    "Cybersecurity": {
+      "skills": [
+        "network security",
+        "penetration testing",
+        "siem",
+        "incident response",
+        "cryptography"
+      ]
+    }
+  },
+  "skill_aliases": {
+    "ml": "machine learning",
+    "scikit learn": "scikit-learn",
+    "rest": "rest api"
+  }
+}

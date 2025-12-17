@@ -1,0 +1,25 @@
+# Testing dependencies for AI Resume System
+# These are additional packages needed for running the test suite
+
+# Core testing framework
+unittest-mock>=1.0.1  # Enhanced mocking capabilities (if needed)
+
+# Performance testing
+psutil>=5.8.0  # System resource monitoring for performance tests
+memory-profiler>=0.60.0  # Memory profiling for performance analysis
+
+# Web testing (for future browser automation tests)
+selenium>=4.0.0  # Browser automation for UI testing
+webdriver-manager>=3.8.0  # Automatic webdriver management
+
+# Reporting and coverage
+coverage>=6.0.0  # Code coverage reporting
+pytest>=7.0.0  # Alternative test runner (optional)
+pytest-html>=3.0.0  # HTML test reports
+pytest-cov>=4.0.0  # Coverage plugin for pytest
+
+# Load testing
+locust>=2.0.0  # Load testing framework (optional for advanced testing)
+
+# Data validation for testing
+jsonschema>=4.0.0  # JSON schema validation for API responses
